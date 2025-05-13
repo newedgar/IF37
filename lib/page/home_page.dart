@@ -5,20 +5,28 @@ import 'package:if37/asset/list_view_container.dart';
 import 'package:if37/asset/main_container.dart';
 import 'package:if37/class/sentence_class.dart';
 import 'package:if37/manager/save_manager.dart';
+import 'package:if37/script/custom_keyboard.dart';
 import 'package:if37/script/synthese_vocale.dart';
+
+
+GlobalKey<HomePageState> homePageKey = GlobalKey<HomePageState>();
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
+  
+
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<HomePage> createState() => HomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class HomePageState extends State<HomePage> {
+  void update() {
+    setState(() {});
+  }
 
   TextEditingController sentenceInputController = TextEditingController();
   List<Sentence> sentencesList = SaveManager().getSentenceList();
-
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +39,7 @@ class _HomePageState extends State<HomePage> {
       body: Padding(padding: EdgeInsets.all(5),child: Column(children: [
         Expanded(child: sentencesListView()),
 
+        //Input sentence form field + save button + read button
         Padding(padding: EdgeInsets.all(10),child: 
           Row(children: [
             Expanded(child: sentenceInputFormField()),
@@ -42,6 +51,10 @@ class _HomePageState extends State<HomePage> {
             
           ],)
         ),
+
+        // if native keyboard is not open, show custom keyboard
+        if (MediaQuery.of(context).viewInsets.bottom < 140) 
+          CustomKeyboard()
       ]))
     );
   }
@@ -94,21 +107,51 @@ class _HomePageState extends State<HomePage> {
   Widget sentenceInputFormField() {
     return mainContainer(
       padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: sentenceInputController,
-        decoration: InputDecoration(
-          labelText: 'Enter a sentence',
-          border: OutlineInputBorder(),
-          suffixIcon: IconButton(
-            icon: Icon(Icons.clear),
-            onPressed: () {
-              sentenceInputController.clear();
-            },
+      child: Stack(children: [
+
+        //normal input for native keyboard
+        if (CustomKeyboard.clickedKeyList.isEmpty)
+        TextFormField(
+          controller: sentenceInputController,
+          decoration: InputDecoration(
+            labelText: 'Enter a sentence',
+            border: OutlineInputBorder(),
+            suffixIcon: IconButton(
+              icon: Icon(Icons.clear),
+              onPressed: () {
+                sentenceInputController.clear();
+              },
+            ),
           ),
+          maxLines: 3,
+          minLines: 3,
         ),
-        maxLines: 3,
-        minLines: 3,
-      ),
+
+
+        //bliss input for custom keyboard
+        if (CustomKeyboard.clickedKeyList.isNotEmpty)
+        Container(
+          height: 100,
+          width: double.infinity,
+          padding: EdgeInsets.all(10),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey),
+            borderRadius: BorderRadius.circular(5),
+            color: Colors.transparent,
+          ),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Wrap(
+              spacing: 8.0,
+              children: CustomKeyboard.clickedKeyList.map((key) {
+              return key.getIcon() as Widget;
+              
+              }).toList(),
+            ),
+          )
+        ),
+
+      ])
     );
   }
 
