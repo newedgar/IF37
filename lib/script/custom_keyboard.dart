@@ -2,101 +2,117 @@ import 'package:flutter/material.dart';
 import 'package:if37/asset/custom_keyboard_button.dart';
 import 'package:if37/page/home_page.dart';
 
-class CustomKeyboard extends StatefulWidget {
+class CustomKeyboard extends StatelessWidget {
   const CustomKeyboard({super.key});
 
-  static List<CustomKeyboardButton> clickedKeyList = [];
+  static List<BlissKey> clickedKeyList = [];
 
-  static addKeyPresed(CustomKeyboardButton button) {
+  static List<BlissKey> getBlissKeyList() => clickedKeyList;
+  static void resetblissKeyList() { 
+    clickedKeyList.clear();
+  }
+  
+ 
+  void addKeyPresed(BlissKey button) {
     clickedKeyList.add(button);
-    print(clickedKeyList.toString());
+    homePageKey.currentState?.update();
   }
 
-  static removeLastKeyPressed() {
+  void removeLastKeyPressed() {
     if (clickedKeyList.isNotEmpty) {
       clickedKeyList.removeLast();
+      homePageKey.currentState?.update();
     }
   }
-
-
-  static final List<CustomKeyboardButton> keyboardButons = [
-    CustomKeyboardButton(
+  //TODO add all bliss icons to the keyboard
+  static final List<BlissKey> keyboardButons = [
+    BlissKey(
       icon: const Icon(Icons.check),
+      translation: 'Approve',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.close),
+      translation: 'Cancel',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.add),
+      translation: 'Increase',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.remove),
+      translation: 'Decrease',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.star),
+      translation: 'Favorite',
     ),
-    CustomKeyboardButton(   //back button
+    BlissKey(   //back button
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
-        CustomKeyboard.removeLastKeyPressed();
-        //TODO  make homepage update
-        homePageKey.currentState?.update();
+      CustomKeyboard().removeLastKeyPressed();
       },
+      buttonColor: const Color.fromARGB(255, 246, 189, 184),
+      translation: 'Back',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.favorite),
+      translation: 'Love',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.home),
+      translation: 'House',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.search),
+      translation: 'Find',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.settings),
+      translation: 'Adjust',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.camera),
+      translation: 'Photo',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.phone),
+      translation: 'Call',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.email),
+      translation: 'Mail',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.lock),
+      translation: 'Secure',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.map),
+      translation: 'Navigate',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.music_note),
+      translation: 'Song',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.shopping_cart),
+      translation: 'Buy',
     ),
-    CustomKeyboardButton(
+    BlissKey(
       icon: const Icon(Icons.cloud),
+      translation: 'Sky',
     ),
   ];
-
-
-  @override
-  State<CustomKeyboard> createState() => _CustomKeyboardState();
-}
-
-class _CustomKeyboardState extends State<CustomKeyboard> {
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(bottom: 30, top: 10), 
+      padding: EdgeInsets.only(bottom: 30, top: 10),
       child: Wrap(
         spacing: 10,
         runSpacing: 10,
-        children: CustomKeyboard.keyboardButons
-      )
+        children: CustomKeyboard.keyboardButons,
+      ),
     );
   }
 }

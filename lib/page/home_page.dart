@@ -1,5 +1,6 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:if37/asset/custom_keyboard_button.dart';
 import 'package:if37/asset/list_item_container.dart';
 import 'package:if37/asset/list_view_container.dart';
 import 'package:if37/asset/main_container.dart';
@@ -12,15 +13,14 @@ import 'package:if37/script/synthese_vocale.dart';
 GlobalKey<HomePageState> homePageKey = GlobalKey<HomePageState>();
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
-
-  
+  HomePage({Key? key}) : super(key: homePageKey);
 
   @override
   State<HomePage> createState() => HomePageState();
 }
 
 class HomePageState extends State<HomePage> {
+
   void update() {
     setState(() {});
   }
@@ -28,14 +28,18 @@ class HomePageState extends State<HomePage> {
   TextEditingController sentenceInputController = TextEditingController();
   List<Sentence> sentencesList = SaveManager().getSentenceList();
 
+  List<BlissKey> blissKeyList = [];
+
   @override
   Widget build(BuildContext context) {
+    blissKeyList = CustomKeyboard.getBlissKeyList();
     sentencesList = SaveManager().getSentenceList();
     
     return Scaffold(
       appBar: AppBar(
         toolbarHeight: 0,
       ),
+      resizeToAvoidBottomInset: false,
       body: Padding(padding: EdgeInsets.all(5),child: Column(children: [
         Expanded(child: sentencesListView()),
 
@@ -52,9 +56,16 @@ class HomePageState extends State<HomePage> {
           ],)
         ),
 
-        // if native keyboard is not open, show custom keyboard
-        if (MediaQuery.of(context).viewInsets.bottom < 140) 
-          CustomKeyboard()
+        AnimatedContainer(
+          duration: Duration(milliseconds: 100),
+          curve: Curves.easeInOut,
+          height: MediaQuery.of(context).viewInsets.bottom > 10
+              ? (MediaQuery.of(context).viewInsets.bottom - 200).clamp(0.0, double.infinity)
+              : 0,
+        ),
+        
+        //custom keyboard
+          CustomKeyboard(key: ValueKey('custom_keyboard'))
       ]))
     );
   }
@@ -110,7 +121,7 @@ class HomePageState extends State<HomePage> {
       child: Stack(children: [
 
         //normal input for native keyboard
-        if (CustomKeyboard.clickedKeyList.isEmpty)
+        if (blissKeyList.isEmpty)
         TextFormField(
           controller: sentenceInputController,
           decoration: InputDecoration(
@@ -129,7 +140,7 @@ class HomePageState extends State<HomePage> {
 
 
         //bliss input for custom keyboard
-        if (CustomKeyboard.clickedKeyList.isNotEmpty)
+        if (blissKeyList.isNotEmpty)
         Container(
           height: 100,
           width: double.infinity,
@@ -144,8 +155,7 @@ class HomePageState extends State<HomePage> {
             child: Wrap(
               spacing: 8.0,
               children: CustomKeyboard.clickedKeyList.map((key) {
-              return key.getIcon() as Widget;
-              
+                return key.getIcon() as Widget;
               }).toList(),
             ),
           )
@@ -161,24 +171,52 @@ class HomePageState extends State<HomePage> {
   Widget buttonSaveSentence() {
     return ElevatedButton(
       onPressed: () {
-        if (sentenceInputController.text.isEmpty) return;
-
-        SaveManager().addSentenceToSavedList(Sentence(sentence: sentenceInputController.text));
-        sentenceInputController.clear();
-        setState(() {});
+        if (sentenceInputController.text.isNotEmpty) {
+          SaveManager().addSentenceToSavedList(Sentence(sentence: sentenceInputController.text));
+          sentenceInputController.clear();
+          setState(() {});
+        }
+        else if (blissKeyList.isNotEmpty) {
+          String translatedSentence = replaceBlissByWord();
+          SaveManager().addSentenceToSavedList(Sentence(sentence: translatedSentence));
+          CustomKeyboard.resetblissKeyList();
+          setState(() {});
+        }
       },
       child: Icon(Icons.save),
     );
   }
 
-  ///Read the sentence with the synthese vocal
+  ///Read the sentence or the bliss with the synthese vocal
   Widget buttonReadSentence() {
     return ElevatedButton(
       onPressed: () {
-        SyntheseVocale().speak(sentenceInputController.text);
+        if (sentenceInputController.text.isNotEmpty) {
+          SyntheseVocale().speak(replaceAbreviationByWord(sentenceInputController.text));
+        }
+        if (blissKeyList.isNotEmpty) {
+          SyntheseVocale().speak(replaceBlissByWord());
+        }
       },
       child: Icon(Icons.voice_chat),
     );
+  }
+
+  ///Replace bliss icons by equivalent words and return the sentence
+  String replaceBlissByWord() {
+    String translatedSentence = blissKeyList.map((bliss) => bliss.translation).join(' ');
+    
+    return translatedSentence;
+  } 
+
+  //TODO replace all abreviation by the word corresponding
+  ///Replace abreviation by the word corresponding and return the sentence
+  String replaceAbreviationByWord(String sentence) {
+    String newSentence = sentence;
+    for (int i = 0; i < blissKeyList.length; i++) {
+      //newSentence = newSentence.replaceAll(blissKeyList[i].tr ().toString(), blissKeyList[i].getIcon().toString());
+    }
+    return newSentence;
   }
 
 

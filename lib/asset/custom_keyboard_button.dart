@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:if37/script/custom_keyboard.dart';
 
-class CustomKeyboardButton extends StatelessWidget {
+class BlissKey extends StatelessWidget {
   final Widget icon;
   final VoidCallback? onPressed;
+  final String translation;
+  final Color? buttonColor;
 
-  const CustomKeyboardButton({
+  const BlissKey({
     super.key,
     required this.icon,
+    required this.translation,
+    this.buttonColor,
     this.onPressed,
   });
 
@@ -18,7 +22,7 @@ class CustomKeyboardButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onPressed ?? () {
-        CustomKeyboard.addKeyPresed(this);
+        CustomKeyboard().addKeyPresed(this);
         //TODO make update home page to show keys 
       },
       child: Container(
@@ -26,7 +30,7 @@ class CustomKeyboardButton extends StatelessWidget {
         height: 50,
         padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
         decoration: BoxDecoration(
-          color: Colors.grey[300],
+          color: buttonColor ?? Colors.grey[300],
           borderRadius: BorderRadius.circular(6),
           boxShadow: [
             BoxShadow(
