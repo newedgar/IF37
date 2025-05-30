@@ -64,6 +64,7 @@ class _AbbreviationFilterPageState extends State<AbbreviationFilterPage> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
+            buildButton("+"),
             // Barre de recherche
             TextField(
               controller: _searchController,
