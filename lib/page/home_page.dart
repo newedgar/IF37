@@ -6,6 +6,7 @@ import 'package:if37/asset/list_view_container.dart';
 import 'package:if37/asset/main_container.dart';
 import 'package:if37/class/sentence_class.dart';
 import 'package:if37/manager/save_manager.dart';
+import 'package:if37/page/abreviation_page.dart';
 import 'package:if37/script/custom_keyboard.dart';
 import 'package:if37/script/synthese_vocale.dart';
 
@@ -40,33 +41,41 @@ class HomePageState extends State<HomePage> {
         toolbarHeight: 0,
       ),
       resizeToAvoidBottomInset: false,
-      body: Padding(padding: EdgeInsets.all(5),child: Column(children: [
-        Expanded(child: sentencesListView()),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).unfocus();
+        },
+        child:  Padding(padding: EdgeInsets.all(5),child: Column(children: [
+          Expanded(child: sentencesListView()),
 
-        //Input sentence form field + save button + read button
-        Padding(padding: EdgeInsets.all(10),child: 
-          Row(children: [
-            Expanded(child: sentenceInputFormField()),
-            SizedBox(width: 10,),
-            Column(children: [
-              buttonSaveSentence(),
-              buttonReadSentence(),
+          //Input sentence form field + save button + read button
+          Padding(padding: EdgeInsets.all(10),child: 
+            Row(children: [
+              Expanded(child: sentenceInputFormField()),
+              SizedBox(width: 10,),
+              mainContainer(child: 
+                Column(children: [
+                  buttonSaveSentence(),
+                  buttonReadSentence(),
+                  buttonAbreviationPage(),
+                ])
+              )
+              
             ],)
-            
-          ],)
-        ),
+          ),
 
-        AnimatedContainer(
-          duration: Duration(milliseconds: 100),
-          curve: Curves.easeInOut,
-          height: MediaQuery.of(context).viewInsets.bottom > 10
-              ? (MediaQuery.of(context).viewInsets.bottom - 200).clamp(0.0, double.infinity)
-              : 0,
-        ),
-        
-        //custom keyboard
-          CustomKeyboard(key: ValueKey('custom_keyboard'))
-      ]))
+          AnimatedContainer(
+            duration: Duration(milliseconds: 100),
+            curve: Curves.easeInOut,
+            height: MediaQuery.of(context).viewInsets.bottom > 10
+                ? (MediaQuery.of(context).viewInsets.bottom - 200).clamp(0.0, double.infinity)
+                : 0,
+          ),
+          
+          //custom keyboard
+            CustomKeyboard(key: ValueKey('custom_keyboard'))
+        ]))
+      )
     );
   }
 
@@ -169,10 +178,10 @@ class HomePageState extends State<HomePage> {
 
   ///Save the current sentence in the list of often sentences
   Widget buttonSaveSentence() {
-    return ElevatedButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         if (sentenceInputController.text.isNotEmpty) {
-          SaveManager().addSentenceToSavedList(Sentence(sentence: sentenceInputController.text));
+          SaveManager().addSentenceToSavedList(Sentence(sentence: replaceAbreviationByWord(sentenceInputController.text)));
           sentenceInputController.clear();
           setState(() {});
         }
@@ -183,14 +192,14 @@ class HomePageState extends State<HomePage> {
           setState(() {});
         }
       },
-      child: Icon(Icons.save),
+      child: Icon(Icons.save, size: 35,),
     );
   }
 
   ///Read the sentence or the bliss with the synthese vocal
   Widget buttonReadSentence() {
-    return ElevatedButton(
-      onPressed: () {
+    return GestureDetector(
+      onTap: () {
         if (sentenceInputController.text.isNotEmpty) {
           SyntheseVocale().speak(replaceAbreviationByWord(sentenceInputController.text));
         }
@@ -198,7 +207,17 @@ class HomePageState extends State<HomePage> {
           SyntheseVocale().speak(replaceBlissByWord());
         }
       },
-      child: Icon(Icons.voice_chat),
+      child: Icon(Icons.voice_chat, size: 35,),
+    );
+  }
+
+  ///Go to abreviation page
+  Widget buttonAbreviationPage() {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) => AbreviationPage()));
+      },
+      child: Icon(Icons.abc_outlined, size: 35,),
     );
   }
 
@@ -209,13 +228,14 @@ class HomePageState extends State<HomePage> {
     return translatedSentence;
   } 
 
-  //TODO replace all abreviation by the word corresponding
   ///Replace abreviation by the word corresponding and return the sentence
   String replaceAbreviationByWord(String sentence) {
     String newSentence = sentence;
-    for (int i = 0; i < blissKeyList.length; i++) {
-      //newSentence = newSentence.replaceAll(blissKeyList[i].tr ().toString(), blissKeyList[i].getIcon().toString());
-    }
+
+    SaveManager().getAbreviationList().forEach((abreviation) {
+      newSentence = newSentence.replaceAll(abreviation.abreviation, abreviation.word);
+    });
+
     return newSentence;
   }
 
