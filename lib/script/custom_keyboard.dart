@@ -24,6 +24,7 @@ class CustomKeyboard extends StatelessWidget {
       homePageKey.currentState?.update();
     }
   }
+
   //TODO add all bliss icons to the keyboard
   static final List<BlissKey> keyboardButons = [
     BlissKey(
@@ -46,6 +47,7 @@ class CustomKeyboard extends StatelessWidget {
       icon: const Icon(Icons.star),
       translation: 'Favorite',
     ),
+    
     BlissKey(   //back button
       icon: const Icon(Icons.arrow_back),
       onPressed: () {
@@ -54,6 +56,7 @@ class CustomKeyboard extends StatelessWidget {
       buttonColor: const Color.fromARGB(255, 246, 189, 184),
       translation: 'Back',
     ),
+
     BlissKey(
       icon: const Icon(Icons.favorite),
       translation: 'Love',

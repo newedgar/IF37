@@ -1,16 +1,26 @@
 # if37
 
-A new Flutter project.
+IF37 Application de communication pour muet
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Eat: A fork and knife crossed over a plate.
+Drink: A glass with a line indicating liquid.
+Happy: A smiling face, similar to a smiley.
+Sad: A frowning face.
+House: A simple drawing of a house with a triangular roof.
+Car: A rectangle with circles for wheels.
+Book: An open book with lines indicating pages.
+Sleep: A crescent moon with a star or a person lying down.
+Friend: Two stick figures standing side by side.
+School: A building with a flag or a bell.
+Work: A hammer and wrench crossed over each other.
+Play: A ball or a swing set.
+Sun: A circle with rays emanating outward.
+Rain: Vertical lines representing raindrops.
+Dog: A simple drawing of a dog, often resembling a stick figure.
+Cat: A simple drawing of a cat, often resembling a stick figure.
+Love: A heart shape.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+maybe choose ore common word
