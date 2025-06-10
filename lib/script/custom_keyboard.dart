@@ -28,24 +28,24 @@ class CustomKeyboard extends StatelessWidget {
   //TODO add all bliss icons to the keyboard
   static final List<BlissKey> keyboardButons = [
     BlissKey(
-      icon: const Icon(Icons.check),
-      translation: 'Approve',
+      icon: Image.asset("assets/icons/keyboard/Imemyself.png"),
+      translation: 'je',
     ),
     BlissKey(
-      icon: const Icon(Icons.close),
-      translation: 'Cancel',
+      icon: Image.asset("assets/icons/keyboard/hehimhimself.png"),
+      translation: 'lui',
     ),
     BlissKey(
-      icon: const Icon(Icons.add),
-      translation: 'Increase',
+      icon: Image.asset("assets/icons/keyboard/sheherherself.png"),
+      translation: 'elle',
     ),
     BlissKey(
-      icon: const Icon(Icons.remove),
-      translation: 'Decrease',
+      icon: Image.asset("assets/icons/keyboard/please.png"),
+      translation: "s'il vous plaît",
     ),
     BlissKey(
-      icon: const Icon(Icons.star),
-      translation: 'Favorite',
+      icon: Image.asset("assets/icons/keyboard/youyourself.png"),
+      translation: 'tu',
     ),
     
     BlissKey(   //back button
