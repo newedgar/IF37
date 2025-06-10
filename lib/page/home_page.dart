@@ -1,14 +1,14 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:if37/asset/custom_keyboard_button.dart';
-import 'package:if37/asset/list_item_container.dart';
-import 'package:if37/asset/list_view_container.dart';
-import 'package:if37/asset/main_container.dart';
-import 'package:if37/class/sentence_class.dart';
-import 'package:if37/manager/save_manager.dart';
-import 'package:if37/page/abreviation_page.dart';
-import 'package:if37/script/custom_keyboard.dart';
-import 'package:if37/script/synthese_vocale.dart';
+import 'package:speaky/asset/custom_keyboard_button.dart';
+import 'package:speaky/asset/list_item_container.dart';
+import 'package:speaky/asset/list_view_container.dart';
+import 'package:speaky/asset/main_container.dart';
+import 'package:speaky/class/sentence_class.dart';
+import 'package:speaky/manager/save_manager.dart';
+import 'package:speaky/page/abreviation_page.dart';
+import 'package:speaky/script/custom_keyboard.dart';
+import 'package:speaky/script/synthese_vocale.dart';
 
 
 GlobalKey<HomePageState> homePageKey = GlobalKey<HomePageState>();

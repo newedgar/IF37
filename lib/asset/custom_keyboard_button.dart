@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:if37/script/custom_keyboard.dart';
+import 'package:speaky/script/custom_keyboard.dart';
+
 
 class BlissKey extends StatelessWidget {
   final Widget icon;

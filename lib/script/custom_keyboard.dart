@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:if37/asset/custom_keyboard_button.dart';
-import 'package:if37/page/home_page.dart';
+import 'package:speaky/asset/custom_keyboard_button.dart';
+import 'package:speaky/page/home_page.dart';
 
 class CustomKeyboard extends StatelessWidget {
   const CustomKeyboard({super.key});
@@ -32,6 +32,10 @@ class CustomKeyboard extends StatelessWidget {
       translation: 'je',
     ),
     BlissKey(
+      icon: Image.asset("assets/icons/keyboard/youyourself.png"),
+      translation: 'tu',
+    ),
+    BlissKey(
       icon: Image.asset("assets/icons/keyboard/hehimhimself.png"),
       translation: 'lui',
     ),
@@ -43,10 +47,6 @@ class CustomKeyboard extends StatelessWidget {
       icon: Image.asset("assets/icons/keyboard/please.png"),
       translation: "s'il vous plaît",
     ),
-    BlissKey(
-      icon: Image.asset("assets/icons/keyboard/youyourself.png"),
-      translation: 'tu',
-    ),
     
     BlissKey(   //back button
       icon: const Icon(Icons.arrow_back),
@@ -54,55 +54,55 @@ class CustomKeyboard extends StatelessWidget {
       CustomKeyboard().removeLastKeyPressed();
       },
       buttonColor: const Color.fromARGB(255, 246, 189, 184),
-      translation: 'Back',
+      translation: 'retour',
     ),
 
     BlissKey(
-      icon: const Icon(Icons.favorite),
+      icon: Image.asset(""),
       translation: 'Love',
     ),
     BlissKey(
-      icon: const Icon(Icons.home),
+      icon: Image.asset(""),
       translation: 'House',
     ),
     BlissKey(
-      icon: const Icon(Icons.search),
+      icon: Image.asset(""),
       translation: 'Find',
     ),
     BlissKey(
-      icon: const Icon(Icons.settings),
+      icon: Image.asset(""),
       translation: 'Adjust',
     ),
     BlissKey(
-      icon: const Icon(Icons.camera),
+      icon: Image.asset(""),
       translation: 'Photo',
     ),
     BlissKey(
-      icon: const Icon(Icons.phone),
+      icon: Image.asset(""),
       translation: 'Call',
     ),
     BlissKey(
-      icon: const Icon(Icons.email),
+      icon: Image.asset(""),
       translation: 'Mail',
     ),
     BlissKey(
-      icon: const Icon(Icons.lock),
+      icon: Image.asset(""),
       translation: 'Secure',
     ),
     BlissKey(
-      icon: const Icon(Icons.map),
+      icon: Image.asset(""),
       translation: 'Navigate',
     ),
     BlissKey(
-      icon: const Icon(Icons.music_note),
+      icon: Image.asset(""),
       translation: 'Song',
     ),
     BlissKey(
-      icon: const Icon(Icons.shopping_cart),
+      icon: Image.asset(""),
       translation: 'Buy',
     ),
     BlissKey(
-      icon: const Icon(Icons.cloud),
+      icon: Image.asset(""),
       translation: 'Sky',
     ),
   ];
@@ -114,7 +114,7 @@ class CustomKeyboard extends StatelessWidget {
       child: Wrap(
         spacing: 10,
         runSpacing: 10,
-        children: CustomKeyboard.keyboardButons,
+        children: CustomKeyboard.keyboardButons.where((key)=> key.icon == "").toList() ,
       ),
     );
   }

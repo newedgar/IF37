@@ -2,11 +2,11 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:if37/asset/list_item_container.dart';
-import 'package:if37/asset/list_view_container.dart';
-import 'package:if37/asset/main_container.dart';
-import 'package:if37/class/abreviation_class.dart';
-import 'package:if37/manager/save_manager.dart';
+import 'package:speaky/asset/list_item_container.dart';
+import 'package:speaky/asset/list_view_container.dart';
+import 'package:speaky/asset/main_container.dart';
+import 'package:speaky/class/abreviation_class.dart';
+import 'package:speaky/manager/save_manager.dart';
 
 
 

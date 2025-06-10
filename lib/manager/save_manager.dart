@@ -1,8 +1,8 @@
 import 'dart:convert';
 
-import 'package:if37/class/abreviation_class.dart';
-import 'package:if37/class/sentence_class.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:speaky/class/abreviation_class.dart';
+import 'package:speaky/class/sentence_class.dart';
 
 class SaveManager {
   //make the SaveManager class a singleton , only crete one time

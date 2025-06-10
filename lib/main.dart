@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:if37/manager/save_manager.dart';
-import 'package:if37/page/home_page.dart';
+import 'package:speaky/manager/save_manager.dart';
+import 'package:speaky/page/home_page.dart';
 
 
 void main() async{
