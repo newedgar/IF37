@@ -29,11 +29,11 @@ class HomePageState extends State<HomePage> {
   TextEditingController sentenceInputController = TextEditingController();
   List<Sentence> sentencesList = SaveManager().getSentenceList();
 
-  List<BlissKey> blissKeyList = [];
+  List<BlissSymbole> blissSymboleList = [];
 
   @override
   Widget build(BuildContext context) {
-    blissKeyList = CustomKeyboard.getBlissKeyList();
+    blissSymboleList = CustomKeyboard.getBlissSymboleList();
     sentencesList = SaveManager().getSentenceList();
     
     return Scaffold(
@@ -125,12 +125,14 @@ class HomePageState extends State<HomePage> {
 
 
   Widget sentenceInputFormField() {
+    ScrollController scrollController = ScrollController();
+
     return mainContainer(
       padding: const EdgeInsets.all(8.0),
       child: Stack(children: [
 
         //normal input for native keyboard
-        if (blissKeyList.isEmpty)
+        if (blissSymboleList.isEmpty)
         TextFormField(
           controller: sentenceInputController,
           decoration: InputDecoration(
@@ -149,28 +151,40 @@ class HomePageState extends State<HomePage> {
 
 
         //bliss input for custom keyboard
-        if (blissKeyList.isNotEmpty)
+        if (blissSymboleList.isNotEmpty)
         Container(
           height: 100,
           width: double.infinity,
-          padding: EdgeInsets.all(10),
+          padding: EdgeInsets.all(0),
           decoration: BoxDecoration(
             border: Border.all(color: Colors.grey),
             borderRadius: BorderRadius.circular(5),
             color: Colors.transparent,
           ),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Wrap(
-              spacing: 8.0,
-              children: CustomKeyboard.clickedKeyList.map((key) {
-                return key.getIcon() as Widget;
-              }).toList(),
+          child: Theme(
+            data: ThemeData(
+              highlightColor: const Color.fromARGB(255, 0, 0, 0), //Does not work
             ),
-          )
-        ),
-
+            child : Scrollbar ( 
+              thumbVisibility: true,
+              controller: scrollController,
+              thickness: 3,
+              
+              child: SingleChildScrollView(
+                controller: scrollController,
+                scrollDirection: Axis.vertical,
+                child: Wrap(
+                  spacing: 8.0,
+                  children: CustomKeyboard.clickedKeyList.map((key) {
+                    return  key.getIcon() ;
+                  }).toList(),
+                ),
+              )
+            )
+          ),
+        )
       ])
+
     );
   }
 
@@ -185,10 +199,10 @@ class HomePageState extends State<HomePage> {
           sentenceInputController.clear();
           setState(() {});
         }
-        else if (blissKeyList.isNotEmpty) {
+        else if (blissSymboleList.isNotEmpty) {
           String translatedSentence = replaceBlissByWord();
           SaveManager().addSentenceToSavedList(Sentence(sentence: translatedSentence));
-          CustomKeyboard.resetblissKeyList();
+          CustomKeyboard.resetBlissSymboleList();
           setState(() {});
         }
       },
@@ -203,7 +217,7 @@ class HomePageState extends State<HomePage> {
         if (sentenceInputController.text.isNotEmpty) {
           SyntheseVocale().speak(replaceAbreviationByWord(sentenceInputController.text));
         }
-        if (blissKeyList.isNotEmpty) {
+        if (blissSymboleList.isNotEmpty) {
           SyntheseVocale().speak(replaceBlissByWord());
         }
       },
@@ -223,9 +237,39 @@ class HomePageState extends State<HomePage> {
 
   ///Replace bliss icons by equivalent words and return the sentence
   String replaceBlissByWord() {
-    String translatedSentence = blissKeyList.map((bliss) => bliss.translation).join(' ');
+    String translatedSentence = blissSymboleList.map((bliss) => bliss.translation).join(' ');
     
-    return translatedSentence;
+    return completeBlissWord(translatedSentence);
+  } 
+
+
+  ///Complete and replace some words in the sentence
+  String completeBlissWord(String sentence) {
+    sentence = sentence.replaceAll(RegExp(r'\bpossible je\b'), "puis-je");
+    sentence = sentence.replaceAll(RegExp(r'\bpossible vous \b'), "pouvez vous");
+    sentence = sentence.replaceAll(RegExp(r'\belle possible\b'), "peux-elle");
+    sentence = sentence.replaceAll(RegExp(r'\bpossible elle\b'), "peux-elle");
+    sentence = sentence.replaceAll(RegExp(r'\bil possible\b'), "peux-il");
+    sentence = sentence.replaceAll(RegExp(r'\bpossible il\b'), "peux-il");
+    sentence = sentence.replaceAll(RegExp(r'\baider je\b'), "m'aider");
+    sentence = sentence.replaceAll(RegExp(r'\baider vous\b'), "vous aider");
+    sentence = sentence.replaceAll(RegExp(r'\bpardon je\b'), "excusez-moi");
+    sentence = sentence.replaceAll(RegExp(r'\btrouver pain\b'), "trouver du pain");
+    sentence = sentence.replaceAll(RegExp(r'\baller vous\b'), "allez vous");
+    
+
+
+    //make first letter uppercase
+    if (sentence.isNotEmpty) {
+      sentence = sentence[0].toUpperCase() + sentence.substring(1);
+    }
+
+    //if no dot or question mark, add dot at the end
+    if (!sentence.endsWith('.') && !sentence.endsWith('?')) {
+      sentence += '.';
+    }
+
+    return sentence;
   } 
 
   ///Replace abreviation by the word corresponding and return the sentence

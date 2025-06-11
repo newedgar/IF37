@@ -100,6 +100,8 @@ class AbreviationPageState extends State<AbreviationPage> {
         children: [
           GestureDetector(
             onTap: () {
+              if (abreviationsList.isEmpty) return; // Prevent removing if the list is empty
+              
               setState(() {
                 SaveManager().removeAbreviationFromSavedList(abreviationsList.last);
               });

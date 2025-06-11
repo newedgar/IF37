@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:speaky/script/custom_keyboard.dart';
 
 
-class BlissKey extends StatelessWidget {
+class BlissSymbole extends StatelessWidget {
   final Widget icon;
   final VoidCallback? onPressed;
   final String translation;
   final Color? buttonColor;
 
-  const BlissKey({
+  const BlissSymbole({
     super.key,
     required this.icon,
     required this.translation,
@@ -17,7 +17,7 @@ class BlissKey extends StatelessWidget {
   });
 
 
-  getIcon() => icon;
+  Widget getIcon() => icon;
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +30,6 @@ class BlissKey extends StatelessWidget {
         child: Container(
           width: 50,
           height: 50,
-          padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 16),
           decoration: BoxDecoration(
             color: buttonColor ?? Colors.grey[300],
             borderRadius: BorderRadius.circular(6),

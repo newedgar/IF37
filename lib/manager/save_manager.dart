@@ -15,7 +15,11 @@ class SaveManager {
   }
 
   List<Sentence> sentenceList = [];
-  List<Abreviation> abreviationList = [];
+  List<Abreviation> abreviationList = [
+    Abreviation(abreviation: "cv", word: "ça va"),
+    Abreviation(abreviation: "bjr", word: "bonjour"),
+    Abreviation(abreviation: "stp", word: "s'il te plaît"),
+  ];
 
 
   //setters and getters
@@ -90,14 +94,16 @@ class SaveManager {
     }
   }
 
-  ///Load all saved sentences from shared preferences
+  ///Load all saved abreviation from shared preferences
   loadAbreviationList() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String>? encodedList = prefs.getStringList('savedAbreviations');
     if (encodedList != null) {
-      abreviationList = encodedList.map((abreviation) => Abreviation.fromJson(jsonDecode(abreviation))).toList();
-    } else {
-      abreviationList = [];
+      List<Abreviation> list = encodedList.map((abreviation) => Abreviation.fromJson(jsonDecode(abreviation))).toList();
+
+      if (list.isNotEmpty) {
+        abreviationList = list;
+      }
     }
   }
   
