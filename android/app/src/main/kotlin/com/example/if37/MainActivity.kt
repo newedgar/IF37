@@ -1,4 +1,4 @@
-package com.example.if37
+package com.example.speaky
 
 import io.flutter.embedding.android.FlutterActivity
 
