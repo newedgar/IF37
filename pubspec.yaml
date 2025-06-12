@@ -44,7 +44,7 @@ flutter_native_splash:
   ios: true
   web: false
   color: "#1e6fd9" # Background color for the splash screen
-  image: assets/app icon/speaky icon transparent.png
+  image: assets/app icon/speaky icon transparent small.png
   android_12: 
-    image: assets/app icon/speaky icon transparent.png # Path to your loading image
+    image: assets/app icon/speaky icon transparent small.png # Path to your loading image
 
